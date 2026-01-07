@@ -25,4 +25,50 @@ used in SOC environments and enterprise networks.
 ---
 
 ## 🧠 Architecture Overview
+Packet
+↓
+Threat Intelligence Check
+↓
+IPS Auto-Blocking
+↓
+Firewall Rules (Priority-Based)
+↓
+ALLOW / DENY Decision
+↓
+Logs & Metrics
+↓
+SOC Dashboard
 
+
+This layered design follows **defense-in-depth principles** used in real firewalls.
+
+---
+
+## 👤 User Roles
+
+| User     | Role     | Permissions |
+|----------|----------|-------------|
+| admin    | Admin    | Full access (manage rules, dashboard, firewall) |
+| analyst  | Analyst  | View-only access (firewall & dashboard) |
+
+---
+
+## 🔐 Demo Credentials
+
+| Username | Password   |
+|--------|------------|
+| admin  | admin123   |
+| analyst | analyst123 |
+
+---
+
+## 🛠 Tech Stack
+
+- **Python**
+- **Flask**
+- **Docker**
+- **HTML / CSS**
+- **Chart.js**
+- **JSON (persistent storage)**
+
+---
