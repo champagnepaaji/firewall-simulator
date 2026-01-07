@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Firewall Rules Management</title>
+
+    <style>
+        body {
+            background: #020617;
+            color: #e5e7eb;
+            font-family: Arial, sans-serif;
+            padding: 30px;
+        }
+
+        h2, h3 {
+            color: #38bdf8;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        th, td {
+            border: 1px solid #334155;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #0f172a;
+        }
+
+        tr:nth-child(even) {
+            background: #020617;
+        }
+
+        input, select, button {
+            margin-top: 8px;
+            padding: 8px;
+            width: 200px;
+        }
+
+        button {
+            background: #38bdf8;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button.delete {
+            background: #ef4444;
+            color: white;
+        }
+
+        a {
+            color: #38bdf8;
+            text-decoration: none;
+        }
+
+        .actions form {
+            display: inline;
+        }
+
+        .nav {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="nav">
+    <a href="/">⬅ Back to Firewall</a> |
+    <a href="/dashboard">📊 SOC Dashboard</a> |
+    <a href="/logout">🚪 Logout</a>
+</div>
+
+<h2>🧱 Firewall Rules</h2>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Priority</th>
+        <th>Action</th>
+        <th>Protocol</th>
+        <th>Port</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for r in rules %}
+    <tr>
+        <td>{{ r["id"] }}</td>
+        <td>{{ r["priority"] }}</td>
+        <td>{{ r["action"] }}</td>
+        <td>{{ r.get("protocol", "-") }}</td>
+        <td>{{ r.get("dst_port", "-") }}</td>
+        <td class="actions">
+            <a href="/rules/edit/{{ r['id'] }}">✏️ Edit</a>
+            |
+            <form action="/rules/delete/{{ r['id'] }}" method="POST">
+                <button type="submit" class="delete"
+                        onclick="return confirm('Delete this rule?')">
+                    🗑 Delete
+                </button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>➕ Add New Rule</h3>
+
+<form method="POST">
+    <label>Priority</label><br>
+    <input type="number" name="priority" required><br>
+
+    <label>Action</label><br>
+    <select name="action">
+        <option value="ALLOW">ALLOW</option>
+        <option value="DENY">DENY</option>
+    </select><br>
+
+    <label>Protocol</label><br>
+    <input name="protocol" placeholder="TCP or UDP"><br>
+
+    <label>Destination Port</label><br>
+    <input type="number" name="dst_port" placeholder="80"><br><br>
+
+    <button type="submit">Add Rule</button>
+</form>
+
+</body>
+</html>

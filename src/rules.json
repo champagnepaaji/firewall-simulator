@@ -1,0 +1,15 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": "DENY",
+    "src_ip": "198.18.0.50"
+  },
+  {
+    "id": 2,
+    "priority": 10,
+    "action": "ALLOW",
+    "protocol": "TCP",
+    "dst_port": 80
+  }
+]

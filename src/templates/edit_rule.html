@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Firewall Rules</title>
+
+  <style>
+    body {
+      background-color: #020617;
+      color: #e5e7eb;
+      font-family: Arial, sans-serif;
+      padding: 30px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 900px;
+      margin-bottom: 25px;
+    }
+
+    th, td {
+      border: 1px solid #334155;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #0f172a;
+    }
+
+    input, select, button {
+      margin-top: 6px;
+      padding: 8px;
+    }
+
+    button {
+      background-color: #38bdf8;
+      border: none;
+      cursor: pointer;
+    }
+
+    .delete {
+      background-color: #ef4444;
+      color: #ffffff;
+    }
+
+    a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Firewall Rules</h2>
+
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Priority</th>
+    <th>Action</th>
+    <th>Protocol</th>
+    <th>Port</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  {% for r in rules %}
+  <tr>
+    <td>{{ r["id"] }}</td>
+    <td>{{ r["priority"] }}</td>
+    <td>{{ r["action"] }}</td>
+    <td>{{ r.get("protocol", "-") }}</td>
+    <td>{{ r.get("dst_port", "-") }}</td>
+    <td>
+      <a href="/rules/edit/{{ r['id'] }}">Edit</a>
+      |
+      <form method="POST" action="/rules/delete/{{ r['id'] }}" style="display:inline;">
+        <button type="submit" class="delete"
+                onclick="return confirm('Delete this rule?');">
+          Delete
+        </button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<h3>Add New Rule</h3>
+
+<form method="POST">
+  <label>Priority</label><br>
+  <input type="number" name="priority" required><br>
+
+  <label>Action</label><br>
+  <select name="action">
+    <option value="ALLOW">ALLOW</option>
+    <option value="DENY">DENY</option>
+  </select><br>
+
+  <label>Protocol</label><br>
+  <input type="text" name="protocol"><br>
+
+  <label>Destination Port</label><br>
+  <input type="number" name="dst_port"><br><br>
+
+  <button type="submit">Add Rule</button>
+</form>
+
+<br>
+<a href="/">Back to Firewall</a>
+
+</body>
+</html>

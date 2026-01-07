@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Firewall Simulator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #020617;
+            --card: #020617;
+            --accent: #38bdf8;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: "Inter", sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #020617, #000);
+            color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 420px;
+            background: linear-gradient(180deg, #020617, #000);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 0 40px rgba(56,189,248,0.15);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 26px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            margin-top: 6px;
+            margin-bottom: 22px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        label {
+            font-size: 13px;
+            color: var(--muted);
+            display: block;
+            margin-top: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            margin-top: 6px;
+            background: #020617;
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            color: #e5e7eb;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px rgba(56,189,248,0.4);
+        }
+
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 12px;
+            background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #020617;
+            font-size: 15px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 30px rgba(56,189,248,0.35);
+        }
+
+        .result {
+            margin-top: 22px;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-align: center;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .footer {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 11px;
+            color: #64748b;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🔥 Firewall Simulator</h1>
+    <div class="subtitle">
+        Simulate packets & analyze firewall decisions
+    </div>
+
+    <form method="POST">
+        <label>Source IP</label>
+        <label>
+            <input name="src_ip" placeholder="192.168.1.10" required>
+        </label>
+
+        <label>Destination IP</label>
+        <label>
+            <input name="dst_ip" placeholder="10.0.0.5" required>
+        </label>
+
+        <label>Destination Port</label>
+        <label>
+            <input type="number" name="dst_port" placeholder="80" required>
+        </label>
+
+        <label>Protocol</label>
+        <label>
+            <select name="protocol">
+                <option value="TCP">TCP</option>
+                <option value="UDP">UDP</option>
+            </select>
+        </label>
+
+        <button type="submit">Simulate Packet</button>
+    </form>
+
+    {% if decision %}
+    <div class="result {{ 'allow' if decision == 'ALLOW' else 'deny' }}">
+        Firewall Decision: {{ decision }}
+    </div>
+    {% endif %}
+
+    <div class="footer">
+        SOC-style Firewall Simulation • Python + Flask
+    </div>
+</div>
+
+</body>
+</html>
+<div style="margin-top:20px; text-align:center;">
+    <a href="/dashboard" style="color:#38bdf8; margin-right:15px;">
+        📊 SOC Dashboard
+    </a>
+    <a href="/rules" style="color:#38bdf8; margin-right:15px;">
+        🧱 Manage Rules
+    </a>
+    <a href="/logout" style="color:#ef4444;">
+        🚪 Logout
+    </a>
+</div>

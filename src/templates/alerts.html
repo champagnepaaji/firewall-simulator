@@ -1,0 +1,11 @@
+<h2>Security Alerts</h2>
+
+<ul>
+    {% for alert in alerts %}
+    <li>
+        <b>{{ alert.type }}</b> |
+        Source: {{ alert.source }} |
+        Severity: {{ alert.severity }}
+    </li>
+    {% endfor %}
+</ul>

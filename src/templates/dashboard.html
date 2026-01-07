@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SOC Dashboard</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background: #020617;
+            color: #e5e7eb;
+            font-family: Arial, sans-serif;
+            padding: 30px;
+        }
+
+        .chart-container {
+            width: 400px;
+            height: 400px;
+            margin-bottom: 30px;
+        }
+
+        a {
+            color: #38bdf8;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>📊 SOC Dashboard</h2>
+
+<!-- Chart container with FIXED size -->
+<div class="chart-container">
+    <canvas
+            id="trafficChart"
+            data-allow="{{ allow }}"
+            data-deny="{{ deny }}">
+    </canvas>
+</div>
+
+<script>
+    // Wait until page is fully loaded
+    window.onload = function () {
+        const chartEl = document.getElementById("trafficChart");
+
+        const allowCount = Number(chartEl.dataset.allow);
+        const denyCount = Number(chartEl.dataset.deny);
+
+        // Debug (optional)
+        console.log("ALLOW:", allowCount, "DENY:", denyCount);
+
+        new Chart(chartEl, {
+            "type": "doughnut",
+            "data": {
+                "labels": ["ALLOW", "DENY"],
+                "datasets": [{
+                    "data": [allowCount, denyCount],
+                    "backgroundColor": ["#22c55e", "#ef4444"]
+                }]
+            },
+            "options": {
+                "responsive": true,
+                "maintainAspectRatio": false
+            }
+        });
+    };
+</script>
+
+<h3>🚫 Auto-Blocked IPs</h3>
+
+<ul>
+    {% for ip in blocked_ips %}
+    <li>{{ ip }}</li>
+    {% endfor %}
+</ul>
+
+<a href="/">⬅ Back to Firewall</a>
+
+</body>
+</html>
