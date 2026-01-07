@@ -26,17 +26,29 @@ used in SOC environments and enterprise networks.
 
 ## 🧠 Architecture Overview
 Packet
+
 ↓
+
 Threat Intelligence Check
+
 ↓
+
 IPS Auto-Blocking
+
 ↓
+
 Firewall Rules (Priority-Based)
+
 ↓
+
 ALLOW / DENY Decision
+
 ↓
+
 Logs & Metrics
+
 ↓
+
 SOC Dashboard
 
 
