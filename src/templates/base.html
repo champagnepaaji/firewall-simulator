@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title if title else "SOC Firewall System" }}</title>
+
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-card: #020617;
+      --accent: #38bdf8;
+      --text-main: #e5e7eb;
+      --text-muted: #94a3b8;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+    }
+
+    /* ---------- NAVBAR ---------- */
+    .navbar {
+      background: #020617;
+      padding: 14px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .navbar h1 {
+      font-size: 18px;
+      color: var(--accent);
+      margin: 0;
+    }
+
+    .nav-links a {
+      margin-left: 20px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    /* ---------- PAGE LAYOUT ---------- */
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: var(--accent);
+      font-size: 20px;
+    }
+
+    /* ---------- FORM ---------- */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    input, select, button {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      background: #020617;
+      color: var(--text-main);
+    }
+
+    button {
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button.danger {
+      background: var(--danger);
+    }
+
+    /* ---------- TABLE ---------- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #1e293b;
+      text-align: center;
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    /* ---------- BADGES ---------- */
+    .badge-allow {
+      color: var(--success);
+      font-weight: bold;
+    }
+
+    .badge-deny {
+      color: var(--danger);
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <h1>SOC Firewall</h1>
+  <div class="nav-links">
+    <a href="/">Firewall</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/rules">Rules</a>
+    <a href="/logout">Logout</a>
+  </div>
+</div>
+
+<div class="container">
+  {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

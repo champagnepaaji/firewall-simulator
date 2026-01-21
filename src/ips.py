@@ -1,21 +1,33 @@
-from collections import defaultdict
+import time
 
-# Track bad behavior per IP
-violation_count = defaultdict(int)
+REQUEST_LIMIT = 5
+WINDOW = 10  # seconds
 
-# Block threshold
-BLOCK_THRESHOLD = 3
-
-# Auto-blocked IPs
+requests = {}
 blocked_ips = set()
+violations = {}
 
 
-def record_violation(src_ip):
-    violation_count[src_ip] += 1
+def record_request(ip):
+    now = time.time()
+    requests.setdefault(ip, [])
+    requests[ip] = [t for t in requests[ip] if now - t < WINDOW]
+    requests[ip].append(now)
 
-    if violation_count[src_ip] >= BLOCK_THRESHOLD:
-        blocked_ips.add(src_ip)
+    if len(requests[ip]) > REQUEST_LIMIT:
+        blocked_ips.add(ip)
+        record_violation(ip)
+        return True
+    return False
 
 
-def is_blocked(src_ip):
-    return src_ip in blocked_ips
+def record_violation(ip):
+    violations[ip] = violations.get(ip, 0) + 1
+
+
+def is_blocked(ip):
+    return ip in blocked_ips
+
+
+def get_violations():
+    return violations
