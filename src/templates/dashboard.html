@@ -1,82 +1,152 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>SOC Dashboard</title>
+<!--suppress JSUnresolvedVariable -->
 
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% extends "base.html" %}
+{% block content %}
 
-    <style>
-        body {
-            background: #020617;
-            color: #e5e7eb;
-            font-family: Arial, sans-serif;
-            padding: 30px;
-        }
+<style>
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
 
-        .chart-container {
-            width: 400px;
-            height: 400px;
-            margin-bottom: 30px;
-        }
+    .chart-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+    }
 
-        a {
-            color: #38bdf8;
-        }
-    </style>
-</head>
+    .full-width {
+        grid-column: span 2;
+    }
 
-<body>
+    .stats {
+        display: flex;
+        gap: 40px;
+        margin-bottom: 16px;
+        font-size: 16px;
+    }
 
-<h2>📊 SOC Dashboard</h2>
+    .stat-allow {
+        color: #22c55e;
+        font-weight: bold;
+    }
 
-<!-- Chart container with FIXED size -->
-<div class="chart-container">
-    <canvas
-            id="trafficChart"
-            data-allow="{{ allow }}"
-            data-deny="{{ deny }}">
-    </canvas>
+    .stat-deny {
+        color: #ef4444;
+        font-weight: bold;
+    }
+</style>
+
+<!-- ================= OVERVIEW ================= -->
+<div class="card">
+    <h2>SOC Traffic Overview</h2>
+
+    <div class="stats">
+        <div>Allowed: <span class="stat-allow">{{ allow }}</span></div>
+        <div>Denied: <span class="stat-deny">{{ deny }}</span></div>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="trafficChart"></canvas>
+    </div>
 </div>
 
+<!-- ================= GRID ================= -->
+<div class="dashboard-grid">
+
+    <!-- RULE EFFECTIVENESS -->
+    <div class="card">
+        <h2>Rule Effectiveness</h2>
+        <div class="chart-container">
+            <canvas id="rulesChart"></canvas>
+        </div>
+    </div>
+ ##alert card security
+    <div class="card">
+        <h2>Security Alerts</h2>
+        {% for a in alerts %}
+        <p>[{{ a.severity }}] {{ a.message }}</p>
+        {% endfor %}
+    </div>
+
+    <!-- BLOCKED IPS -->
+    <div class="card">
+        <h2>Blocked IPs</h2>
+        {% if blocked_ips %}
+        <ul>
+            {% for ip in blocked_ips %}
+            <li>{{ ip }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No blocked IPs yet.</p>
+        {% endif %}
+    </div>
+
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
-    // Wait until page is fully loaded
-    window.onload = function () {
-        const chartEl = document.getElementById("trafficChart");
-
-        const allowCount = Number(chartEl.dataset.allow);
-        const denyCount = Number(chartEl.dataset.deny);
-
-        // Debug (optional)
-        console.log("ALLOW:", allowCount, "DENY:", denyCount);
-
-        new Chart(chartEl, {
-            "type": "doughnut",
-            "data": {
-                "labels": ["ALLOW", "DENY"],
-                "datasets": [{
-                    "data": [allowCount, denyCount],
-                    "backgroundColor": ["#22c55e", "#ef4444"]
-                }]
-            },
-            "options": {
-                "responsive": true,
-                "maintainAspectRatio": false
+    // ================= TRAFFIC CHART =================
+    const trafficCtx = document.getElementById("trafficChart").getContext("2d");
+    new Chart(trafficCtx, {
+        type: "doughnut",
+        data: {
+            labels: ["Allowed", "Denied"],
+            datasets: [{
+                data: [{{ allow }}, {{ deny }}],
+    backgroundColor: ["#22c55e", "#ef4444"],
+        borderWidth: 1
+    }]
+    },
+    options: {
+        maintainAspectRatio: false,
+            plugins: {
+            legend: {
+                position: "bottom",
+                    labels: {
+                    color: "#e5e7eb"
+                }
             }
-        });
-    };
+        }
+    }
+    });
+
+    // ================= RULE HIT CHART =================
+    const rulesCtx = document.getElementById("rulesChart").getContext("2d");
+    new Chart(rulesCtx, {
+        type: "bar",
+        data: {
+            labels: {{ rule_labels | tojson }},
+    datasets: [{
+        label: "Hit Count",
+        data: {{ rule_hits | tojson }},
+    backgroundColor: "#38bdf8"
+    }]
+    },
+    options: {
+        maintainAspectRatio: false,
+            scales: {
+            x: {
+                ticks: { color: "#e5e7eb" },
+                grid: { color: "#1e293b" }
+            },
+            y: {
+                ticks: { color: "#e5e7eb" },
+                grid: { color: "#1e293b" }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: { color: "#e5e7eb" }
+            }
+        }
+    }
+    });
+
 </script>
 
-<h3>🚫 Auto-Blocked IPs</h3>
-
-<ul>
-    {% for ip in blocked_ips %}
-    <li>{{ ip }}</li>
-    {% endfor %}
-</ul>
-
-<a href="/">⬅ Back to Firewall</a>
-
-</body>
-</html>
+{% endblock %}

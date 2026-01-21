@@ -43,3 +43,10 @@ def update_rule(rule_id, updated_data):
     if rule:
         rule.update(updated_data)
         save_rules(firewall_rules)
+
+def increment_rule_hit(rule_id):
+    for rule in firewall_rules:
+        if rule["id"] == rule_id:
+            rule["hit_count"] = rule.get("hit_count", 0) + 1
+            save_rules(firewall_rules)
+            break

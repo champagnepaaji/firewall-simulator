@@ -1,60 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Login | Firewall Simulator</title>
+  <meta charset="UTF-8">
+  <title>Login | SOC Firewall</title>
+
   <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-card: #020617;
+      --accent: #38bdf8;
+      --text-main: #e5e7eb;
+      --text-muted: #94a3b8;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      background: #020617;
-      color: #e5e7eb;
-      font-family: Arial;
+      margin: 0;
+      height: 100vh;
+      background: var(--bg-dark);
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--text-main);
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
     }
-    .card {
-      background: #020617;
-      padding: 30px;
-      border-radius: 12px;
-      width: 320px;
-      box-shadow: 0 0 30px rgba(56,189,248,0.3);
-    }
-    h2 {
-      color: #38bdf8;
-      text-align: center;
-    }
-    input, button {
+
+    .login-card {
       width: 100%;
-      margin-top: 12px;
-      padding: 10px;
+      max-width: 420px;
+      background: var(--bg-card);
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 32px;
     }
-    button {
-      background: #38bdf8;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .error {
-      color: #ef4444;
-      margin-top: 10px;
+
+    .login-card h1 {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 22px;
       text-align: center;
+    }
+
+    .login-card p {
+      margin: 0 0 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      background: #020617;
+      color: var(--text-main);
+      margin-bottom: 18px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: var(--accent);
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
     }
   </style>
 </head>
 
 <body>
-<div class="card">
-  <h2>Firewall Login</h2>
 
-  <form method="POST">
-    <input name="username" placeholder="Username" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <button type="submit">Login</button>
-  </form>
+<div class="login-card">
+  <h1>🔐 SOC Firewall</h1>
+  <p>Secure Access to Firewall Management Console</p>
 
   {% if error %}
   <div class="error">{{ error }}</div>
   {% endif %}
+
+  <form method="POST">
+    <label>Username</label>
+    <input type="text" name="username" required>
+
+    <label>Password</label>
+    <input type="password" name="password" required>
+
+    <button type="submit">Sign In</button>
+  </form>
+
+  <div class="footer">
+    SOC-style Firewall Simulator • Python + Flask
+  </div>
 </div>
+
 </body>
 </html>
