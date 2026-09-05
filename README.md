@@ -85,3 +85,7 @@ This layered design follows **defense-in-depth principles** used in real firewal
 - **JSON (persistent storage)**
 
 ---
+
+## 📄 License
+
+This project is licensed under the MIT License. See `LICENSE` for details.
